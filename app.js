@@ -79,7 +79,7 @@ var UIController = (function() {
       } else if (type === "exp") {
         element = DOMstrings.expenseContainer;
         html =
-          '<div class="item clearfix" id="expense-%id%"> <div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">- %value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"><i></button></div> </div></div>';
+          '<div class="item clearfix" id="expense-%id%"> <div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">- %value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"><i></button></div></div></div>';
       }
 
       // Replace the plaholder text with some actual data
@@ -89,6 +89,19 @@ var UIController = (function() {
 
       // Insert the HTML into the DOM
       document.querySelector(element).insertAdjacentHTML("beforeend", newHtml);
+    },
+    clearFields: function() {
+      var fields, fieldsArr;
+      // Selecting the description and the value fields (returns a List not an Array so it needs to be converted to an Array)
+      fields = document.querySelectorAll(
+        DOMstrings.inputDescription + " ," + DOMstrings.inputValue
+      );
+      // Converting a Nodelist to an Array using Array.from()
+      fieldsArr = Array.from(fields);
+      fieldsArr.forEach(function(current, index, array) {
+        current.value = "";
+      });
+      fieldsArr[0].focus();
     },
     getDOMstrings: function() {
       return DOMstrings;
@@ -116,8 +129,10 @@ var controller = (function(budgetCtrl, UICtrl) {
 
     // 3. Add item to the UI
     UICtrl.addListItem(newItem, input.type);
-    // 4. Calculate the budget
-    // 5. Display the budget on the UI
+    // 4. Clear the fields
+    UICtrl.clearFields();
+    // 5. Calculate the budget
+    // 6. Display the budget on the UI
   };
   return {
     init: function() {
