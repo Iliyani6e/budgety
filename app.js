@@ -51,6 +51,21 @@ var budgetController = (function() {
       //return the new item
       return newItem;
     },
+    deleteItem: function(type, id) {
+      var ids, index;
+      //id = 3
+      // console.log(data.allItems[type][id]);
+      ids = data.allitems[type].map(current => {
+        return current.id;
+      });
+      index = ids.indexOf(id);
+      console.log(ids);
+      console.log(index);
+      if (index !== -1) {
+        data.allitems[type].splice(index, 1);
+      }
+      console.log(ids);
+    },
     calculateBudget: function() {
       //calculate total income and expenses
       calculateTotal("inc");
@@ -207,7 +222,13 @@ var controller = (function(budgetCtrl, UICtrl) {
     if (itemID) {
       splitID = itemID.split("-");
       type = splitID[0];
-      ID = splitID[1];
+      ID = parseInt(splitID[1]);
+
+      //1. Delete the item from the data structure
+      budgetController.deleteItem(type, ID);
+      //2.Delete the item from the UI
+
+      //3.Update and show the new budget
     }
   };
   return {
